@@ -6,7 +6,7 @@ const User = require('../models/user');
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   User.find(function (err, allUsers) {
-    res.json(allUsers);
+    res.json({ users: allUsers });
   });
 });
 
