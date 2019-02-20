@@ -62,3 +62,26 @@ Response:
 Creates a new event, returns the created event if successful. MUST add an extra email property to the request `Event` body\
 Request: `Event`\
 Response: `Event`
+
+## Days
+`Day` Object
+```
+{
+    mood: String ("SAD", "NEUTRAL", "HAPPY),
+    date: String (format: YYYY-MM-DDTHH:MM:SSZ ex: 2015-03-25T12:00:00Z)
+}
+```
+
+`GET /days`\
+Returns a list of all days. MUST add `email` query parameter. Can add optional `mood` parameter to filter moods.\
+Response:
+```
+{
+    days: [ Day ],
+}
+```
+
+`POST /days/create`\
+Creates a new day, returns the created day if successful. MUST add an extra email property to the request `Day` body\
+Request: `Day`\
+Response: `Day`
