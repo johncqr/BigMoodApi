@@ -37,3 +37,28 @@ Request:
 }
 ```
 Response: `User`
+
+## Events
+`Event` Object
+```
+{
+    name: String,
+    desc: String,
+    mood: String ("SAD", "NEUTRAL", "HAPPY),
+    startDate: String (format: YYYY-MM-DDTHH:MM:SSZ ex: 2015-03-25T12:00:00Z)
+}
+```
+
+`GET /events`\
+Returns a list of all events. MUST add `email` query parameter. Can add optional `mood` parameter to filter moods.\
+Response:
+```
+{
+    events: [ Event ],
+}
+```
+
+`POST /events/create`\
+Creates a new event, returns the created event if successful. MUST add an extra email property to the request `Event` body\
+Request: `Event`\
+Response: `Event`
