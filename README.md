@@ -45,8 +45,7 @@ Response: `User`
     name: String,
     desc: String,
     mood: String ("SAD", "NEUTRAL", "HAPPY),
-    startDate: String (format: YYYY-MM-DDTHH:MM:SSZ ex: 2015-03-25T12:00:00Z)
-    endDate: String (format: YYYY-MM-DDTHH:MM:SSZ ex: 2015-03-25T12:00:00Z)
+    date: String (format: YYYY-MM-DD ex: 2015-03-25)
 ```
 
 `GET /events`\

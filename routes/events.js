@@ -35,8 +35,7 @@ router.post('/create', function (req, res) {
         name: req.body.name,
         desc: req.body.desc,
         mood: req.body.mood,
-        startDate: new Date(req.body.startDate),
-        endDate: new Date(req.body.endDate),
+        date: new Date(req.body.date),
         userId: foundUser._id,
       });
 

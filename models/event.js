@@ -4,8 +4,7 @@ const eventSchema = new Schema({
   name: String,
   desc: String,
   mood: String,
-  startDate: Date,
-  endDate: Date,
+  date: Date,
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, { versionKey: false });
 
