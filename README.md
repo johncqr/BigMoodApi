@@ -72,7 +72,7 @@ Response: `Event`
 ```
 
 `GET /days`\
-Returns a list of all days. MUST add `email` query parameter. Can add optional `mood` parameter to filter moods.\
+Returns a list of all days. MUST add `email: String` query parameter. Can add optional `mood: String` parameter to filter moods. Can add optional `month: Integer` AND `year: Integer` parameters to filter specific month.\
 Response:
 ```
 {

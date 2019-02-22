@@ -5,6 +5,13 @@ const router = express.Router();
 const User = require('../models/user');
 const Day = require('../models/day');
 
+function generateMonthQueryProp(month, year) {
+  month -= 1;
+  const fromDate = new Date(year, month, 1);
+  const toDate = new Date(fromDate.getFullYear(), fromDate.getMonth() + 1, 0);
+  return { '$gte': fromDate, '$lte': toDate };
+}
+
 /* GET day listing. */
 router.get('/', function (req, res, next) {
   User.findOne({ email: req.query.email }, function (err, foundUser) {
@@ -14,6 +21,9 @@ router.get('/', function (req, res, next) {
       let findQuery = { userId: foundUser._id };
       if ('mood' in req.query) {
         findQuery.mood = req.query.mood;
+      }
+      if ('month' in req.query && 'year' in req.query) {
+        findQuery.date = generateMonthQueryProp(req.query.month, req.query.year);
       }
       Day.find(findQuery, function (err, foundDays) {
         res.json({ days: foundDays });
