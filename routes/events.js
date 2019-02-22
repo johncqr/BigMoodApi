@@ -15,6 +15,10 @@ router.get('/', function (req, res, next) {
       if ('mood' in req.query) {
         findQuery.mood = req.query.mood;
       }
+      if ('date' in req.query) {
+        findQuery.date = new Date(req.query.date);
+        console.log(findQuery.date);
+      }
       Event.find(findQuery, function (err, foundEvents) {
         res.json({ events: foundEvents });
       });

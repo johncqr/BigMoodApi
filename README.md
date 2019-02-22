@@ -49,7 +49,7 @@ Response: `User`
 ```
 
 `GET /events`\
-Returns a list of all events. MUST add `email` query parameter. Can add optional `mood` parameter to filter moods.\
+Returns a list of all events. MUST add `email: String` query parameter. Can add optional `mood: String` parameter to filter moods. Can add optional `date: String (format: YYYY-MM-DD)` to filter by day.\
 Response:
 ```
 {
