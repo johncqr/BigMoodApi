@@ -29,6 +29,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// debug middleware
+app.use(function (req, res, next) {
+  console.log('Method:', req.method);
+  console.log('Body:', req.body);
+  console.log('Params:', req.query);
+  next();
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/events', eventsRouter);
