@@ -49,6 +49,7 @@ router.post('/onboard', function (req, res) {
         const newEvent = new Event({
           name: ev,
           mood: 'HAPPY',
+          score: 0,
           userId: foundUser._id,
         });
         newEvent.save();

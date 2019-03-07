@@ -35,16 +35,20 @@ router.post('/create', function (req, res) {
     if (!foundUser) {
       res.status(400).json({ message: 'Invalid user email' });
     } else {
-      const newEvent = new Event({
-        name: req.body.name,
-        desc: req.body.desc,
-        mood: req.body.mood,
-        date: new Date(req.body.date),
-        userId: foundUser._id,
-      });
+      Event.findOne({ name: req.body.name, userId: foundUser._id }, {}, { sort: { 'date' : -1 } }, function (err, foundEvent) {
+        const newScore = foundEvent ? foundEvent.score + 1 : 0
+        const newEvent = new Event({
+          name: req.body.name,
+          desc: req.body.desc,
+          mood: req.body.mood,
+          date: new Date(req.body.date),
+          score: newScore,
+          userId: foundUser._id,
+        });
 
-      newEvent.save(function (err, event) {
-        res.json(event);
+        newEvent.save(function (err, event) {
+          return res.json(event);
+        });
       });
     }
   });
