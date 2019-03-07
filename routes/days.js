@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
       if ('month' in req.query && 'year' in req.query) {
         findQuery.date = generateMonthQueryProp(req.query.month, req.query.year);
       }
-      Day.find(findQuery, function (err, foundDays) {
+      Day.find(findQuery).sort({date: 1}).exec(function (err, foundDays) {
         res.json({ days: foundDays });
       });
     }

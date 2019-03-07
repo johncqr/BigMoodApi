@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../models/user');
+const Profile = require('../models/profile');
+const Event = require('../models/event');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -20,7 +22,11 @@ router.post('/create', function (req, res) {
   });
 
   newUser.save(function (err, user) {
-    res.json(user);
+    if (err) {
+      return res.json({ error: err });
+    } else {
+      return res.json(user);
+    }
   });
 });
 
@@ -35,4 +41,29 @@ router.post('/login', function (req, res) {
   });
 });
 
+/* Onboard new user */
+router.post('/onboard', function (req, res) {
+  User.findOne({ email: req.body.email }, function (err, foundUser) {
+    if (foundUser) {
+      for (ev of req.body.events.split(',')) {
+        const newEvent = new Event({
+          name: ev,
+          mood: 'HAPPY',
+          userId: foundUser._id,
+        });
+        newEvent.save();
+      }
+      const newProfile = new Profile({
+        mood: req.body.mood,
+        goal: req.body.goal,
+        userId: foundUser._id,
+      })
+      newProfile.save(function (err, profile) {
+        return res.json(profile);
+      });
+    } else {
+      res.status(400).json({ message: "User does not exist"});
+    }
+  });
+});
 module.exports = router;

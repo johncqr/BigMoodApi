@@ -38,18 +38,38 @@ Request:
 ```
 Response: `User`
 
+`POST /users/onboard`\
+Onboards a user, returns a user profile if successful.\
+Request:
+```
+{
+    mood: String ("SAD", "NEUTRAL", "HAPPY"),
+    goal: String,
+    events: String (comma seperated),
+    email: String
+}
+```
+Response:
+```
+{
+    mood: String ("SAD", "NEUTRAL", "HAPPY"),
+    goal: String,
+}
+
+
 ## Events
 `Event` Object
 ```
 {
     name: String,
     desc: String,
-    mood: String ("SAD", "NEUTRAL", "HAPPY),
+    mood: String ("SAD", "NEUTRAL", "HAPPY"),
     date: String (format: YYYY-MM-DD ex: 2015-03-25)
 ```
 
 `GET /events`\
 Returns a list of all events. MUST add `email: String` query parameter. Can add optional `mood: String` parameter to filter moods. Can add optional `date: String (format: YYYY-MM-DD)` to filter by day.\
+Params: `email: String`\
 Response:
 ```
 {
@@ -66,13 +86,14 @@ Response: `Event`
 `Day` Object
 ```
 {
-    mood: String ("SAD", "NEUTRAL", "HAPPY),
+    mood: String ("SAD", "NEUTRAL", "HAPPY"),
     date: String (format: YYYY-MM-DD 2015-03-25)
 }
 ```
 
 `GET /days`\
 Returns a list of all days. MUST add `email: String` query parameter. Can add optional `mood: String` parameter to filter moods. Can add optional `month: Integer` AND `year: Integer` parameters to filter specific month.\
+Params: `email: String`\
 Response:
 ```
 {
@@ -82,5 +103,5 @@ Response:
 
 `POST /days/create`\
 Creates a new day, returns the created day if successful. MUST add an extra email property to the request `Day` body\
-Request: `Day`\
+Request: `Day + email: String`\
 Response: `Day`
