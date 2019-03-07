@@ -55,7 +55,7 @@ Response:
     mood: String ("SAD", "NEUTRAL", "HAPPY"),
     goal: String,
 }
-
+```
 
 ## Events
 `Event` Object
@@ -65,6 +65,7 @@ Response:
     desc: String,
     mood: String ("SAD", "NEUTRAL", "HAPPY"),
     date: String (format: YYYY-MM-DD ex: 2015-03-25)
+}
 ```
 
 `GET /events`\
@@ -105,3 +106,18 @@ Response:
 Creates a new day, returns the created day if successful. MUST add an extra email property to the request `Day` body\
 Request: `Day + email: String`\
 Response: `Day`
+
+## Dev
+
+`POST /nuke`\
+Clears database.\
+Request:
+```
+{
+    code: String (correct code required for successful nuke)
+}
+```
+Response:
+```
+{}
+```
