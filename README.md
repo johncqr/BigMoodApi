@@ -83,6 +83,26 @@ Creates a new event, returns the created event if successful. MUST add an extra 
 Request: `Event`\
 Response: `Event`
 
+## Health
+`Health` Object
+```
+{
+    steps: Int,
+    sleep: Int
+}
+```
+
+`POST /health/create`
+Creates a new health day log.\
+Request:
+```
+{
+    date: String,
+    info: Health
+}
+```
+Response: same as above
+
 ## Days
 `Day` Object
 ```
@@ -99,6 +119,16 @@ Response:
 ```
 {
     days: [ Day ],
+}
+```
+
+`GET /days/log`\
+Returns health data and events that happened on a specific date. MUST add `date: String (2019-03-23)` param.
+Response:
+```
+{
+    log: Health,
+    events: [ Event ]
 }
 ```
 
