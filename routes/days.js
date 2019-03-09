@@ -49,7 +49,16 @@ router.get('/log', function (req, res) {
           if (error) {
             return res.json({ error });
           }
-          return res.json({ log: foundLog, events: foundEvents });
+          Day.findOne(findQuery, function (error, foundDay) {
+            if (error) {
+              return res.json({ error });
+            }
+            return res.json({
+              mood: foundDay ? foundDay.mood : {},
+              log: foundLog ? foundLog : {},
+              events: foundEvents ? foundEvents : []
+            });
+          })
         });
       });
     }

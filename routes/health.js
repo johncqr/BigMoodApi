@@ -15,6 +15,9 @@ router.get('/', function (req, res, next) {
         findQuery.date = new Date(req.query.date);
       }
       Health.find(findQuery, function (err, foundLogs) {
+        if (!foundLogs || err) {
+          return res.json({});
+        }
         res.json({ logs: foundLogs });
       });
     }

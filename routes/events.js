@@ -21,6 +21,9 @@ router.get('/', function (req, res, next) {
         console.log(findQuery.date);
       }
       Event.find(findQuery, function (err, foundEvents) {
+        if (!foundEvents || err) {
+          return res.json({});
+        }
         res.json({ events: foundEvents });
       });
     }
