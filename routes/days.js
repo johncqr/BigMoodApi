@@ -54,8 +54,8 @@ router.get('/log', function (req, res) {
               return res.json({ error });
             }
             return res.json({
-              mood: foundDay ? foundDay.mood : {},
-              log: foundLog ? foundLog : {},
+              mood: foundDay ? foundDay.mood : 'NONE',
+              log: foundLog ? foundLog : { date: new Date(req.query.date), info: { sleep: 0, steps: 0 }},
               events: foundEvents ? foundEvents : []
             });
           })
