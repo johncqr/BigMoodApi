@@ -4,7 +4,6 @@ const router = express.Router();
 
 const User = require('../models/user');
 const Event = require('../models/event');
-const Health = require('../models/health');
 
 /* GET event listing. */
 router.get('/', function (req, res, next) {
@@ -29,6 +28,18 @@ router.get('/', function (req, res, next) {
     }
   });
 });
+
+/* GET ranked suggestions */
+router.get('/suggestions', function (req, res, next) {
+  User.findOne({ email: req.query.email }, function (err, foundUser) {
+    if (!foundUser) {
+      res.status(400).json({ message: 'Invalid user email' });
+    } else {
+
+    }
+  });
+});
+
 
 /* Create event */
 router.post('/create', function (req, res) {

@@ -2,27 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../models/user');
-const Health = require('../models/health');
-
-/* GET health logs. */
-router.get('/', function (req, res, next) {
-  User.findOne({ email: req.query.email }, function (err, foundUser) {
-    if (!foundUser) {
-      res.status(400).json({ message: 'Invalid user email' });
-    } else {
-      let findQuery = { userId: foundUser._id };
-      if ('date' in req.query) {
-        findQuery.date = new Date(req.query.date);
-      }
-      Health.find(findQuery, function (err, foundLogs) {
-        if (!foundLogs || err) {
-          return res.json({});
-        }
-        res.json({ logs: foundLogs });
-      });
-    }
-  });
-});
+const Day = require('../models/day');
 
 /* Create health log */
 router.post('/create', function (req, res) {
@@ -30,13 +10,10 @@ router.post('/create', function (req, res) {
     if (!foundUser) {
       res.status(400).json({ message: 'Invalid user email' });
     } else {
-      const newHealthLog = new Health({
-        date: req.body.date,
-        info: req.body.info,
-        userId: foundUser._id
-      });
-      newHealthLog.save(function(err, healthLog) {
-        return res.json(healthLog);
+      const date = new Date(req.body.date);
+      Day.findOneAndUpdate({ userId: foundUser._id, date },
+        { info: req.body.info }, function (err, day) {
+        return res.json(day);
       });
     }
   });

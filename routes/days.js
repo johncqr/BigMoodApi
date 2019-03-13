@@ -5,7 +5,6 @@ const router = express.Router();
 const User = require('../models/user');
 const Day = require('../models/day');
 const Event = require('../models/event');
-const Health = require('../models/health');
 
 function generateMonthQueryProp(month, year) {
   month -= 1;
@@ -45,21 +44,16 @@ router.get('/log', function (req, res) {
         if (error) {
           return res.json({ error });
         }
-        Health.findOne(findQuery, function (error, foundLog) {
+        Day.findOne(findQuery, function (error, foundDay) {
           if (error) {
             return res.json({ error });
           }
-          Day.findOne(findQuery, function (error, foundDay) {
-            if (error) {
-              return res.json({ error });
-            }
-            return res.json({
-              mood: foundDay ? foundDay.mood : 'NONE',
-              log: foundLog ? foundLog : { date: new Date(req.query.date), info: { sleep: 0, steps: 0 }},
-              events: foundEvents ? foundEvents : []
-            });
-          })
-        });
+          return res.json({
+            mood: foundDay ? foundDay.mood : 'NONE',
+            info: foundDay ? foundDay.info : { sleep: 0, steps: 0 },
+            events: foundEvents ? foundEvents : []
+          });
+        })
       });
     }
   });
@@ -78,6 +72,7 @@ router.post('/create', function (req, res) {
         mood: req.body.mood,
         date: new Date(req.body.date),
         userId: foundUser._id,
+        info: { sleep: 0, steps: 0 }
       });
 
       newDay.save(function (err, day) {
