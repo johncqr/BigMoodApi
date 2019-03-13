@@ -1,9 +1,11 @@
 const express = require('express');
 const enums = require('../libs/enums');
+const recsys = require('../libs/recsys');
 const router = express.Router();
 
 const User = require('../models/user');
 const Event = require('../models/event');
+const EventMeta = require('../models/eventMeta');
 
 /* GET event listing. */
 router.get('/', function (req, res, next) {
@@ -11,19 +13,11 @@ router.get('/', function (req, res, next) {
     if (!foundUser) {
       res.status(400).json({ message: 'Invalid user email' });
     } else {
-      let findQuery = { userId: foundUser._id };
-      if ('mood' in req.query) {
-        findQuery.mood = req.query.mood;
-      }
-      if ('date' in req.query) {
-        findQuery.date = new Date(req.query.date);
-        console.log(findQuery.date);
-      }
-      Event.find(findQuery, function (err, foundEvents) {
-        if (!foundEvents || err) {
+      EventMeta.find({ userId: foundUser._id }, function (err, eventMetas) {
+        if (!eventMetas || err) {
           return res.json({});
         }
-        res.json({ events: foundEvents });
+        res.json({ events: eventMetas });
       });
     }
   });
@@ -35,7 +29,8 @@ router.get('/suggestions', function (req, res, next) {
     if (!foundUser) {
       res.status(400).json({ message: 'Invalid user email' });
     } else {
-
+      recsys.determineEventSuggestions(foundUser._id, 'HAPPY')
+        .then(data => res.json(data));
     }
   });
 });
@@ -50,19 +45,37 @@ router.post('/create', function (req, res) {
     if (!foundUser) {
       res.status(400).json({ message: 'Invalid user email' });
     } else {
-      Event.findOne({ name: req.body.name, userId: foundUser._id }, {}, { sort: { 'date' : -1 } }, function (err, foundEvent) {
-        const newScore = foundEvent ? foundEvent.score + 1 : 0
-        const newEvent = new Event({
-          name: req.body.name,
-          desc: req.body.desc,
-          mood: req.body.mood,
-          date: new Date(req.body.date),
-          score: newScore,
-          userId: foundUser._id,
-        });
-
-        newEvent.save(function (err, event) {
-          return res.json(event);
+      Event.findOne({ date: new Date(req.body.date), userId: foundUser._id }, function (err, foundEvent) {
+        if (!foundEvent) {
+          const newEvent = new Event({
+            logs: [{ name: req.body.name, mood: req.body.mood }],
+            date: new Date(req.body.date),
+            userId: foundUser._id,
+          });
+          newEvent.save();
+        } else {
+          foundEvent.logs.push({ name: req.body.name, mood: req.body.mood })
+          foundEvent.save();
+        }
+        EventMeta.findOne({ name: req.body.name, userId: foundUser._id }, function (err, foundEventMeta) {
+          if (!foundEventMeta) {
+            return new EventMeta({
+              name: req.body.name,
+              happyScore: req.body.mood === 'HAPPY' ? 1 : 0,
+              neutralScore: req.body.mood === 'NEUTRAL' ? 1 : 0,
+              sadScore: req.body.mood === 'SAD' ? 1 : 0,
+              userId: foundUser._id,
+            }).save((created) => res.json(created))
+          } else {
+            if (req.body.mood === 'HAPPY') {
+              foundEventMeta.happyScore += 1
+            } else if (req.body.mood === 'NEUTRAL') {
+              foundEventMeta.sadScore += 1
+            } else {
+              foundEventMeta.neutralScore += 1
+            }
+            foundEventMeta.save((updated) => res.json(updated))
+          }
         });
       });
     }

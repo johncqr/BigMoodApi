@@ -1,5 +1,6 @@
 const express = require('express');
 const enums = require('../libs/enums');
+const recsys = require('../libs/recsys');
 const router = express.Router();
 
 const User = require('../models/user');
@@ -40,7 +41,7 @@ router.get('/log', function (req, res) {
       res.status(400).json({ message: 'Invalid user email' });
     } else {
       let findQuery = { userId: foundUser._id, date: new Date(req.query.date) };
-      Event.find(findQuery, function (error, foundEvents) {
+      Event.findOne(findQuery, function (error, foundEvent) {
         if (error) {
           return res.json({ error });
         }
@@ -51,7 +52,7 @@ router.get('/log', function (req, res) {
           return res.json({
             mood: foundDay ? foundDay.mood : 'NONE',
             info: foundDay ? foundDay.info : { sleep: 0, steps: 0 },
-            events: foundEvents ? foundEvents : []
+            events: foundEvent ? foundEvent.logs : []
           });
         })
       });
@@ -72,11 +73,11 @@ router.post('/create', function (req, res) {
         mood: req.body.mood,
         date: new Date(req.body.date),
         userId: foundUser._id,
-        info: { sleep: 0, steps: 0 }
+        info: req.body.info
       });
 
       newDay.save(function (err, day) {
-        res.json(day);
+        recsys.determineActivitySuggestions(foundUser._id, new Date(req.body.date).getDay(), req.body.info, req.body.mood).then(data => res.json(data));
       });
     }
   });

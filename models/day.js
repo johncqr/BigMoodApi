@@ -4,7 +4,7 @@ const daySchema = new Schema({
   mood: String,
   date: Date,
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  info: Schema.Types.Mixed
+  info: Schema.Types.Mixed,
 }, { versionKey: false });
 
 module.exports = mongoose.model('Day', daySchema);

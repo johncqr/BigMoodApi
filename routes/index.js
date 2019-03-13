@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
+const Recsys = require('../libs/recsys.js');
 
 const Day = require('../models/day');
 const Event = require('../models/event');
+const EventMeta = require('../models/eventMeta');
 const Profile = require('../models/profile');
 const User = require('../models/user');
-const Recsys = require('../libs/recsys.js');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -54,27 +55,48 @@ function makeDay(mood, date, info, userId) {
     mood,
     date,
     userId,
-    info
+    info,
   });
 }
 
-function makeEvent(name, mood, date, score, userId) {
-  date = new Date(date);
-  return new Event({
-    name,
-    desc: '',
-    mood,
-    date,
-    score,
-    userId
-  });
+async function makeEventMeta(name, mood, userId) {
+  return EventMeta.findOne({ name, userId })
+    .then(eventMeta => {
+      if (!eventMeta) {
+        return new EventMeta({
+          name,
+          happyScore: mood === 'HAPPY' ? 1 : 0,
+          neutralScore: mood === 'NEUTRAL' ? 1 : 0,
+          sadScore: mood === 'SAD' ? 1 : 0,
+          userId
+        }).save()
+      } else {
+        if (mood === 'HAPPY') {
+          eventMeta.happyScore += 1
+        } else if (mood === 'NEUTRAL') {
+          eventMeta.sadScore += 1
+        } else {
+          eventMeta.neutralScore += 1
+        }
+        return eventMeta.save()
+      }
+    })
+}
+
+function makeEvent(userId, date, logs) {
+  new Event({
+    userId,
+    logs,
+    date
+  }).save();
 }
 
 async function createTestDay(userId, date, mood, steps, sleep, events) {
   const info = { steps, sleep };
   for (e of events) {
-    makeEvent(e.name, e.mood, date, e.score ? e.score : 0, userId).save();
+    await makeEventMeta(e.name, e.mood, userId);
   }
+  await makeEvent(userId, date, events);
   console.log(`Created day ${date}`);
   return makeDay(mood, date, info, userId).save();
 }
@@ -85,7 +107,7 @@ async function dropSchema(schema, name='') {
 
 // drop all collections
 async function nuke() {
-  for (schema of [Day, Event, Profile]) {
+  for (schema of [Day, Event, Profile, EventMeta]) {
     await dropSchema(schema);
   }
   return dropSchema(User);
@@ -105,13 +127,13 @@ async function fill() {
       createTestDay(testUser._id, '2019-03-07', 'NEUTRAL', 5102, 7, [
         { name: 'Ate eggs and avocado', mood: 'HAPPY' },
         { name: 'Went to class', mood: 'NEUTRAL' },
-        { name: 'Talked to John', mood: 'HAPPY', score: 1},
+        { name: 'Talked to John', mood: 'HAPPY'},
         { name: 'Cried myself to sleep', mood: 'SAD' },
       ]);
       createTestDay(testUser._id, '2019-03-08', 'NEUTRAL', 4976, 7, [
         { name: 'Ate oranges', mood: 'NEUTRAL' },
         { name: 'Went to class', mood: 'HAPPY' },
-        { name: 'Talked to John', mood: 'HAPPY', score: 2},
+        { name: 'Talked to John', mood: 'HAPPY'},
         { name: 'Ate medium rate steak', mood: 'SAD' }
       ]);
       createTestDay(testUser._id, '2019-03-09', 'SAD', 2546, 4, [
