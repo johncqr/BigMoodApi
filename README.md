@@ -58,30 +58,35 @@ Response:
 ```
 
 ## Events
-`Event` Object
-```
-{
-    name: String,
-    desc: String,
-    mood: String ("SAD", "NEUTRAL", "HAPPY"),
-    date: String (format: YYYY-MM-DD ex: 2015-03-25)
-}
-```
-
-`GET /events`\
-Returns a list of all events. MUST add `email: String` query parameter. Can add optional `mood: String` parameter to filter moods. Can add optional `date: String (format: YYYY-MM-DD)` to filter by day.\
+`GET /events/suggestions`\
+Returns a list of ranked events events. MUST add `email: String` query parameter.\
 Params: `email: String`\
 Response:
 ```
 {
-    events: [ Event ],
+    eventSuggestions: [ { name: String, happyScore: Int } ],
 }
 ```
 
 `POST /events/create`\
-Creates a new event, returns the created event if successful. MUST add an extra email property to the request `Event` body\
-Request: `Event`\
-Response: `Event`
+Creates a new event, returns the current events of the day if successful.\
+Request:\
+```
+{
+    email: String,
+    mood: String,
+    name: String,
+    date: Date
+
+}
+```
+Response:
+```
+{
+    logs: [ { name: String, mood: String } ],
+    date: Date
+}
+```
 
 ## Health
 `Health` Object
@@ -139,13 +144,11 @@ Response: `Day`
 
 ## Dev
 
-`POST /nuke`\
-Clears database.\
+`POST /fluke`\
+Clears and fills database with dummy data.\
 Request:
 ```
-{
-    code: String (correct code required for successful nuke)
-}
+{}
 ```
 Response:
 ```
