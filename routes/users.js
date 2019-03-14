@@ -3,7 +3,7 @@ const router = express.Router();
 
 const User = require('../models/user');
 const Profile = require('../models/profile');
-const Event = require('../models/event');
+const EventMeta = require('../models/eventMeta');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -46,13 +46,14 @@ router.post('/onboard', function (req, res) {
   User.findOne({ email: req.body.email }, function (err, foundUser) {
     if (foundUser) {
       for (ev of req.body.events.split(',')) {
-        const newEvent = new Event({
+        const newEventMeta = new EventMeta({
           name: ev,
-          mood: 'HAPPY',
-          score: 0,
+          happyScore: 1,
+          sadScore: 0,
+          neutralScore: 0,
           userId: foundUser._id,
         });
-        newEvent.save();
+        newEventMeta.save();
       }
       const newProfile = new Profile({
         mood: req.body.mood,

@@ -1,6 +1,6 @@
 # BigMoodApi
 
-JSON lol
+JSON
 
 ## Users
 `User` Object
@@ -88,32 +88,21 @@ Response:
 }
 ```
 
-## Health
-`Health` Object
-```
-{
-    steps: Int,
-    sleep: Int
-}
-```
-
-`POST /health/create`
-Creates a new health day log.\
-Request:
-```
-{
-    date: String,
-    info: Health
-}
-```
-Response: same as above
-
 ## Days
 `Day` Object
 ```
 {
     mood: String ("SAD", "NEUTRAL", "HAPPY"),
     date: String (format: YYYY-MM-DD 2015-03-25)
+    info:
+}
+```
+
+`Health` Object
+```
+{
+    steps: Int,
+    sleep: Int
 }
 ```
 
@@ -140,6 +129,17 @@ Response:
 `POST /days/create`\
 Creates a new day, returns the created day if successful. MUST add an extra email property to the request `Day` body\
 Request: `Day + email: String`\
+Response: `Day`
+
+`POST /days/health`\
+Updates the health of an existing day, returns the updated day.\
+Request:
+```
+{
+    date: String,
+    info: Health
+}
+```
 Response: `Day`
 
 ## Dev
