@@ -53,7 +53,7 @@ router.post('/create', function (req, res) {
             neutralScore: req.body.mood === 'NEUTRAL' ? 1 : 0,
             sadScore: req.body.mood === 'SAD' ? 1 : 0,
             userId: foundUser._id,
-          }).save((created) => res.json(created))
+          }).save()
         } else {
           if (req.body.mood === 'HAPPY') {
             foundEventMeta.happyScore += 1

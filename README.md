@@ -89,20 +89,20 @@ Response:
 ```
 
 ## Days
-`Day` Object
-```
-{
-    mood: String ("SAD", "NEUTRAL", "HAPPY"),
-    date: String (format: YYYY-MM-DD 2015-03-25)
-    info:
-}
-```
-
 `Health` Object
 ```
 {
     steps: Int,
     sleep: Int
+}
+```
+
+`Day` Object
+```
+{
+    mood: String ("SAD", "NEUTRAL", "HAPPY"),
+    date: String (format: YYYY-MM-DD 2015-03-25)
+    info: Health
 }
 ```
 

@@ -27,7 +27,7 @@ router.get('/', function (req, res, next) {
       if ('month' in req.query && 'year' in req.query) {
         findQuery.date = generateMonthQueryProp(req.query.month, req.query.year);
       }
-      Day.find(findQuery).sort({date: 1}).exec(function (err, foundDays) {
+      Day.find(findQuery).sort('date').exec(function (err, foundDays) {
         res.json({ days: foundDays });
       });
     }
@@ -49,10 +49,17 @@ router.get('/log', function (req, res) {
           if (error) {
             return res.json({ error });
           }
+          let eventLogs = []
+          if (foundEvent && foundEvent.logs) {
+            eventLogs = foundEvent.logs.slice();
+            for (let i = 0; i < eventLogs.length; ++i) {
+              eventLogs._id = i;
+            }
+          }
           return res.json({
             mood: foundDay ? foundDay.mood : 'NONE',
             info: foundDay ? foundDay.info : { sleep: 0, steps: 0 },
-            events: foundEvent ? foundEvent.logs : []
+            events: eventLogs
           });
         })
       });
@@ -77,7 +84,7 @@ router.post('/create', function (req, res) {
       });
 
       newDay.save(function (err, day) {
-        recsys.determineActivitySuggestions(foundUser._id, new Date(req.body.date).getDay(), req.body.info, req.body.mood).then(data => res.json(data));
+        recsys.determineActivitySuggestions(foundUser._id, new Date(req.body.date).getDay(), req.body.info, req.body.mood).then(activitySuggestions => res.json({ day, activitySuggestions }));
       });
     }
   });
