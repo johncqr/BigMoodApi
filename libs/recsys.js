@@ -59,20 +59,20 @@ async function determineActivitySuggestions(userId, day, latestInfo, mood) {
   console.log(healthInfo);
   console.log(stepsDif);
   if (stepsDif < 0) {
-    suggestions.push(`You should walk more! Maybe ${-stepsDif} more steps.`);
+    suggestions.push({ name: `You should walk more! Maybe ${-stepsDif} more steps.` });
   }
   if (sleepDif < 0) {
-    suggestions.push(`You should sleep more! Maybe ${-sleepDif} more hours.`);
+    suggestions.push({ name: `You should sleep more! Maybe ${-sleepDif} more hours.` });
   }
   if (suggestions.length === 0) {
-    suggestions.push('What would have made your day better? Write about it in an event!');
+    suggestions.push({ name: 'What would have made your day better? Write about it in an event!' });
   }
-  return { activitySuggestions: suggestions }
+  return suggestions
 }
 
 async function determineEventSuggestions(userId, mood) {
   const eventMetas = await EventMeta.find({ userId }).sort('-happyScore').limit(5).exec();
-  return { eventSuggestions: eventMetas }
+  return eventMetas
 }
 
 function morphEventString(name) {

@@ -13,7 +13,6 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
-
 router.post('/fill', function (req, res) {
   fill();
   res.json({ message: 'Fill received' });
@@ -117,38 +116,95 @@ async function fill() {
   const userId = testUser._id;
   await createProfile('NEUTRAL', 'Becoming happier', userId);
 
-  await createTestDay(testUser._id, '2019-03-06', 'NEUTRAL', 5546, 7, [
-    { name: 'Ate pancakes', mood: 'HAPPY' },
+  await createTestDay(testUser._id, '2019-03-06', 'NEUTRAL', 4546, 7, [
+    { name: 'Did homework', mood: 'NEUTRAL' },
     { name: 'Went to class', mood: 'NEUTRAL' },
-    { name: 'Talked to John', mood: 'HAPPY' },
+    { name: 'Talked to Grandma', mood: 'HAPPY' },
+    { name: 'Ran a mile', mood: 'NEUTRAL' },
+    { name: "Ate Wendy's", mood: 'NEUTRAL' },
   ]);
-  await createTestDay(testUser._id, '2019-03-07', 'NEUTRAL', 5102, 7, [
+  await createTestDay(testUser._id, '2019-03-07', 'SAD', 3101, 5, [
     { name: 'Ate eggs and avocado', mood: 'HAPPY' },
     { name: 'Went to class', mood: 'NEUTRAL' },
-    { name: 'Talked to John', mood: 'HAPPY'},
+    { name: 'Crammed homework', mood: 'SAD'},
     { name: 'Cried myself to sleep', mood: 'SAD' },
   ]);
   await createTestDay(testUser._id, '2019-03-08', 'NEUTRAL', 4976, 7, [
     { name: 'Ate oranges', mood: 'NEUTRAL' },
     { name: 'Went to class', mood: 'HAPPY' },
-    { name: 'Talked to John', mood: 'HAPPY'},
+    { name: 'Talked to Grandma', mood: 'HAPPY'},
     { name: 'Ate medium rate steak', mood: 'SAD' }
   ]);
-  await createTestDay(testUser._id, '2019-03-09', 'SAD', 2546, 4, [
-    { name: 'Going to the vet for Fido', mood: 'SAD' },
-    { name: 'Journaled a little bit', mood: 'NEUTRAL' },
+  await createTestDay(testUser._id, '2019-03-09', 'HAPPY', 8210, 10, [
+    { name: 'Adopted a cat', mood: 'HAPPY' },
+    { name: 'Played with cat', mood: 'HAPPY' },
+    { name: 'Petted cat', mood: 'HAPPY' },
     { name: 'Played some video games', mood: 'HAPPY' },
-    { name: 'Fido died', mood: 'SAD' }
+    { name: 'Ran a mile', mood: 'NEUTRAL' },
   ]);
-  await createTestDay(testUser._id, '2019-03-10', 'SAD', 1546, 6, [
-    { name: 'Buried Fido', mood: 'SAD' },
-    { name: 'Ran a mile', mood: 'HAPPY' },
+  await createTestDay(testUser._id, '2019-03-10', 'HAPPY', 6809, 9, [
+    { name: 'Took cat to vet', mood: 'NEUTRAL' },
+    { name: 'Ate sushi', mood: 'HAPPY' },
+    { name: 'Petted cat', mood: 'HAPPY' },
+    { name: 'Played with cat', mood: 'HAPPY' },
   ]);
-  await createTestDay(testUser._id, '2019-03-11', 'HAPPY', 3546, 10, [
-    { name: 'Adopted a new dog', mood: 'HAPPY' },
-    { name: 'Petted new puppy', mood: 'HAPPY' },
+  await createTestDay(testUser._id, '2019-03-11', 'NEUTRAL', 3546, 6, [
+    { name: "Ate Wendy's", mood: 'NEUTRAL' },
+    { name: 'Petted cat', mood: 'HAPPY' },
     { name: 'Went to class', mood: 'NEUTRAL' },
-    { name: 'Ran a mile', mood: 'HAPPY' },
+  ]);
+  await createTestDay(testUser._id, '2019-03-12', 'NEUTRAL', 5586, 8, [
+    { name: "Ate Wendy's", mood: 'NEUTRAL' },
+    { name: 'Went to class', mood: 'NEUTRAL' },
+    { name: 'Ran a mile', mood: 'NEUTRAL' },
+    { name: 'Petted cat', mood: 'HAPPY' },
+  ]);
+  await createTestDay(testUser._id, '2019-03-13', 'HAPPY', 6112, 9, [
+    { name: 'Adopted a new dog', mood: 'HAPPY' },
+    { name: 'Petted cat', mood: 'HAPPY' },
+    { name: 'Played with cat', mood: 'HAPPY' },
+    { name: 'Went to class', mood: 'NEUTRAL' },
+  ]);
+  await createTestDay(testUser._id, '2019-03-14', 'SAD', 2534, 6, [
+    { name: 'Ate pancakes', mood: 'HAPPY' },
+    { name: "Ate Wendy's", mood: 'SAD' },
+    { name: 'Went to class', mood: 'SAD' },
+    { name: 'Crammed homework', mood: 'SAD' },
+
+  ]);
+  await createTestDay(testUser._id, '2019-03-15', 'SAD', 2861, 4, [
+    { name: "Ate Wendy's", mood: 'NEUTRAL' },
+    { name: 'Went to class', mood: 'NEUTRAL' },
+    { name: 'Talked to grandma', mood: 'NEUTRAL' },
+    { name: 'Crammed homework', mood: 'SAD' },
+  ]);
+  await createTestDay(testUser._id, '2019-03-16', 'HAPPY', 8732, 9, [
+    { name: 'Took a nap', mood: 'NEUTRAL' },
+    { name: 'Ate Sushi', mood: 'HAPPY' },
+    { name: 'Petted cat', mood: 'HAPPY' },
+    { name: 'Played with cat', mood: 'HAPPY' },
+    { name: 'Ran a mile', mood: 'NEUTRAL' },
+  ]);
+  await createTestDay(testUser._id, '2019-03-17', 'HAPPY', 7320, 8, [
+    { name: 'Ate oranges', mood: 'NEUTRAL' },
+    { name: 'Cooked food', mood: 'HAPPY' },
+    { name: 'Petted cat', mood: 'HAPPY' },
+    { name: 'Watched movie', mood: 'HAPPY' },
+  ]);
+  await createTestDay(testUser._id, '2019-03-18', 'NEUTRAL', 5546, 6, [
+    { name: "Ate Wendy's", mood: 'NEUTRAL' },
+    { name: 'Went to class', mood: 'NEUTRAL' },
+    { name: 'Did homework', mood: 'NEUTRAL' },
+    { name: 'Talked to Grandma', mood: 'HAPPY' },
+    { name: 'Petted cat', mood: 'HAPPY' },
+  ]);
+  await createTestDay(testUser._id, '2019-03-19', 'HAPPY', 7822, 7, [
+    { name: "Ate Wendy's", mood: 'NEUTRAL' },
+    { name: 'Went to class', mood: 'NEUTRAL' },
+    { name: 'Talked to Grandma', mood: 'HAPPY' },
+    { name: 'Ate Sushi', mood: 'HAPPY' },
+    { name: 'Went for a run', mood: 'HAPPY' },
+    { name: 'Petted cat', mood: 'HAPPY' },
   ]);
   return await recsys.generateContext(testUser._id);
 }

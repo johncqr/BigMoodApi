@@ -24,15 +24,20 @@ router.get('/', function (req, res, next) {
 });
 
 /* GET ranked suggestions */
-router.get('/suggestions', function (req, res, next) {
-  User.findOne({ email: req.query.email }, function (err, foundUser) {
-    if (!foundUser) {
-      res.status(400).json({ message: 'Invalid user email' });
+router.post('/help', async function (req, res, next) {
+  const foundUser = await User.findOne({ email: req.body.email })
+  if (!foundUser) {
+    res.status(400).json({ message: 'Invalid user email' });
+  } else {
+    const eventSuggestions = await recsys.determineEventSuggestions(foundUser._id, 'HAPPY')
+    let activitySuggestions;
+    if (req.body.info) {
+      activitySuggestions = await recsys.determineActivitySuggestions(foundUser._id, new Date().getDay(), req.body.info, req.body.mood)
     } else {
-      recsys.determineEventSuggestions(foundUser._id, 'HAPPY')
-        .then(data => res.json(data));
+      activitySuggestions = []
     }
-  });
+    return res.json({ eventSuggestions, activitySuggestions })
+  }
 });
 
 
