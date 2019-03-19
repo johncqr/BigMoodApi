@@ -1,5 +1,7 @@
 # BigMoodApi
 
+This is the backend API for Big Mood. See [frontend here](https://github.com/NeilTCox/BigMood "BigMood Github Repo").
+
 # File Explanations
 
 * `libs/` : Helper functions.
