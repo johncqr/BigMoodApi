@@ -1,5 +1,28 @@
 # BigMoodApi
 
+# File Explanations
+
+* `libs/` : Helper functions.
+    - `enums.js` : Defines moods.
+    - `recsys.js` : Functions that generate user models / context and recommendations.
+* `models/` : MongoDB database models.
+    - `day.js` : Day and health information associated.
+    - `event.js` : Lists of logged events per day.
+    - `eventMeta.js` : Event scoring information.
+    - `profile.js` : User goal info and overall mood.
+    - `user.js` : User authentication information.
+* `routes/` : Defines API routes for the app. See `API Docs` section for detailed usage information.
+    - `day.js` : Logging, editing days.
+    - `events.js` : Logging, editing events.
+    - `users.js` : Creating, authenticating users.
+    - `index.js` : Boilerplate code. Unused.
+* `package.json` : List of packages used in project. Required for setup.
+
+* `bin/` : Boilerplate code to run app.
+* `views/` : Boilerplate code. Unused since frontend is separate.
+* `public/` : Boilerplate code. Unused since frontend is separate.
+
+
 # Project Setup
 1. Setup MongoDB on your local machine.
 2. Run `yarn install` in the root of the project directory.
