@@ -1,5 +1,11 @@
 # BigMoodApi
 
+# Project Setup
+1. Setup MongoDB on your local machine.
+2. Run `yarn install` in the root of the project directory.
+3. Run `mongod` in a command prompt (run a local MongoDB server).
+4. Open another command prompt and run `yarn start` in the root of the project directory. By default, the server runs on `localhost:3000`.
+
 # API Docs (for developers)
 
 All requests and responses are in JSON format.
