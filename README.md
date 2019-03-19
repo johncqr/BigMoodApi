@@ -1,6 +1,8 @@
 # BigMoodApi
 
-JSON
+# API Docs (for developers)
+
+All requests and responses are in JSON format.
 
 ## Users
 `User` Object
@@ -142,7 +144,7 @@ Request:
 ```
 Response: `Day`
 
-## Dev
+## Testing Routes
 
 `POST /fluke`\
 Clears and fills database with dummy data.\
